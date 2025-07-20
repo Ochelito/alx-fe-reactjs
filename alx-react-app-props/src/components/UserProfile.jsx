@@ -1,3 +1,5 @@
+
+
 /* Create a User Profile Card Using Props
 mandatory
 Objective: Create a UserProfile component that receives and displays user information through props.
@@ -29,6 +31,8 @@ Use the component with props. For example: <UserProfile name="Alice" age="25" bi
 Run the Application:
 
 Start your application and ensure the UserProfile component displays the information correctly.*/
+import { useContext } from 'react';
+import UserContext from './UserContext';
 
 const UserProfile = (props) => {
     return(
