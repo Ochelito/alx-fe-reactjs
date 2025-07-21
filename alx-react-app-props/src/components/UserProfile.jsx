@@ -32,7 +32,7 @@ Run the Application:
 
 Start your application and ensure the UserProfile component displays the information correctly.*/
 import { useContext } from 'react';
-import UserContext from './UserContext';
+import UserContext from './components/UserContext';
 
 const UserProfile = (props) => {
     return(
