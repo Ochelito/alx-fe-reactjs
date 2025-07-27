@@ -1,31 +1,59 @@
 import { create } from 'zustand';
 
-// Zustand store with CRUD actions for recipes
 const useRecipeStore = create((set, get) => ({
   recipes: [],
+  searchTerm: '',
+  filteredRecipes: [],
 
-  // Add a new recipe
+  // Update the search term
+  setSearchTerm: (term) => {
+    set({ searchTerm: term });
+    get().filterRecipes(); // Automatically filter when search term changes
+  },
+
+  // Filter based on current searchTerm
+  filterRecipes: () =>
+    set((state) => ({
+      filteredRecipes: state.recipes.filter((recipe) =>
+        recipe.title.toLowerCase().includes(state.searchTerm.toLowerCase())
+      ),
+    })),
+
+  // Add new recipe
   addRecipe: (newRecipe) =>
     set((state) => ({
       recipes: [...state.recipes, newRecipe],
     })),
 
-  // Replace the entire recipe list
-  setRecipes: (recipes) => set({ recipes }),
+  // Replace entire list
+  setRecipes: (recipes) =>
+    set({ recipes, filteredRecipes: recipes }),
 
-  // Delete a recipe by its ID
+  // Delete a recipe
   deleteRecipe: (id) =>
-    set((state) => ({
-      recipes: state.recipes.filter((recipe) => recipe.id !== id),
-    })),
+    set((state) => {
+      const updated = state.recipes.filter((recipe) => recipe.id !== id);
+      return {
+        recipes: updated,
+        filteredRecipes: updated.filter((recipe) =>
+          recipe.title.toLowerCase().includes(state.searchTerm.toLowerCase())
+        ),
+      };
+    }),
 
-  // Update a recipe by its ID
+  //  Update a recipe
   updateRecipe: (updatedRecipe) =>
-    set((state) => ({
-      recipes: state.recipes.map((recipe) =>
+    set((state) => {
+      const updated = state.recipes.map((recipe) =>
         recipe.id === updatedRecipe.id ? updatedRecipe : recipe
-      ),
-    })),
+      );
+      return {
+        recipes: updated,
+        filteredRecipes: updated.filter((recipe) =>
+          recipe.title.toLowerCase().includes(state.searchTerm.toLowerCase())
+        ),
+      };
+    }),
 }));
 
 export default useRecipeStore;
