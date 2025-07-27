@@ -6,7 +6,7 @@ import DeleteRecipeButton from './components/DeleteRecipeButton';
 
 const RecipeDetails = () => {
   const { id } = useParams();
-  const recipeId = Number(id);
+  const recipeId = parseInt(id);
   const recipe = useRecipeStore(state =>
     state.recipes.find(r => r.id === recipeId)
   );
