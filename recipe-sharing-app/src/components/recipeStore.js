@@ -1,28 +1,31 @@
 import { create } from 'zustand';
 
-// Defining the initial state and actions separately for clarity
+// Zustand store with CRUD actions for recipes
 const useRecipeStore = create((set, get) => ({
   recipes: [],
 
-  // Adding a new recipe to the current list
-  addRecipe: (newRecipe) => {
-    const currentRecipes = get().recipes;
-    set({ recipes: [...currentRecipes, newRecipe] });
-  },
+  // Add a new recipe
+  addRecipe: (newRecipe) =>
+    set((state) => ({
+      recipes: [...state.recipes, newRecipe],
+    })),
 
-  // Replaceing the entire recipe list
+  // Replace the entire recipe list
   setRecipes: (recipes) => set({ recipes }),
 
-  // Removing a recipe by ID
-  removeRecipe: (id) => {
-    const filtered = get().recipes.filter(recipe => recipe.id !== id);
-    set({ recipes: filtered });
-  },
+  // Delete a recipe by its ID
+  deleteRecipe: (id) =>
+    set((state) => ({
+      recipes: state.recipes.filter((recipe) => recipe.id !== id),
+    })),
 
-  // Finding a recipe by ID (example of a selector-like helper)
-  getRecipeById: (id) => {
-    return get().recipes.find(recipe => recipe.id === id);
-  },
+  // Update a recipe by its ID
+  updateRecipe: (updatedRecipe) =>
+    set((state) => ({
+      recipes: state.recipes.map((recipe) =>
+        recipe.id === updatedRecipe.id ? updatedRecipe : recipe
+      ),
+    })),
 }));
 
 export default useRecipeStore;
