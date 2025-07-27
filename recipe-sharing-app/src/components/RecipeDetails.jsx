@@ -1,41 +1,34 @@
+import { useParams, useNavigate } from 'react-router-dom';
+import { useRecipeStore } from './components/recipeStore';
 import { useState } from 'react';
-import { useRecipeStore } from '../recipeStore';
+import EditRecipeForm from './components/EditRecipeForm';
+import DeleteRecipeButton from './components/DeleteRecipeButton';
 
-const EditRecipeForm = ({ recipe, onClose }) => {
-  const updateRecipe = useRecipeStore(state => state.updateRecipe);
-  const [title, setTitle] = useState(recipe.title);
-  const [description, setDescription] = useState(recipe.description);
+const RecipeDetails = () => {
+  const { id } = useParams();
+  const recipeId = Number(id);
+  const recipe = useRecipeStore(state =>
+    state.recipes.find(r => r.id === recipeId)
+  );
+  const [editing, setEditing] = useState(false);
+  const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
-    event.preventDefault(); // Prevents page reload
-
-    updateRecipe({
-      ...recipe,
-      title,
-      description,
-    });
-
-    onClose(); // Optionally close form or navigate back
-  };
+  if (!recipe) return <p>Recipe not found.</p>;
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h3>Edit Recipe</h3>
-      <input
-        type="text"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        placeholder="Title"
-      />
-      <textarea
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-        placeholder="Description"
-      />
-      <button type="submit">Save</button>
-      <button type="button" onClick={onClose}>Cancel</button>
-    </form>
+    <div>
+      {editing ? (
+        <EditRecipeForm recipe={recipe} onClose={() => setEditing(false)} />
+      ) : (
+        <>
+          <h1>{recipe.title}</h1>
+          <p>{recipe.description}</p>
+          <button onClick={() => setEditing(true)}>Edit</button>
+          <DeleteRecipeButton recipeId={recipe.id} onDelete={() => navigate('/')} />
+        </>
+      )}
+    </div>
   );
 };
 
-export default EditRecipeForm;
+export default RecipeDetails;
