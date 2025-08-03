@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { fetchUserData, fetchFullUserDetails } from './services/githubService';
+import githubService from '../services/githubService';
+
 
 const Search = () => {
   const [username, setUsername] = useState('');
@@ -19,10 +20,10 @@ const Search = () => {
     setPage(1);
 
     try {
-      const { users: searchResults, totalCount } = await fetchUserData(username, location, minRepos, 1);
+      const { users: searchResults, totalCount } = await githubService.fetchUserData(username, location, minRepos, 1);
 
       const detailedUsers = await Promise.all(
-        searchResults.map(user => fetchFullUserDetails(user.login))
+        searchResults.map(user => githubService.fetchFullUserDetails(user.login))
       );
 
       setUsers(detailedUsers);
@@ -39,10 +40,10 @@ const Search = () => {
     const nextPage = page + 1;
 
     try {
-      const { users: moreUsers } = await fetchUserData(username, location, minRepos, nextPage);
+      const { users: moreUsers } = await githubService.fetchUserData(username, location, minRepos, nextPage);
 
       const detailedUsers = await Promise.all(
-        moreUsers.map(user => fetchFullUserDetails(user.login))
+        moreUsers.map(user => githubService.fetchFullUserDetails(user.login))
       );
 
       setUsers(prev => [...prev, ...detailedUsers]);

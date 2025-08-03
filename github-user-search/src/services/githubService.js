@@ -8,7 +8,7 @@ const BASE_URL = 'https://api.github.com';
  * @returns {Promise<object>} - The user data from GitHub API.
  */
 
-export const fetchUserData = async (username, location = '', minRepos = '', page = 1) => {
+const fetchUserData = async (username, location = '', minRepos = '', page = 1) => {
   try {
     let query = '';
     if (username) query += `user:${username}`;
@@ -32,7 +32,7 @@ export const fetchUserData = async (username, location = '', minRepos = '', page
   }
 };
 
-export const fetchFullUserDetails = async (username) => {
+const fetchFullUserDetails = async (username) => {
   try {
     const res = await axios.get(`${BASE_URL}/users/${username}`);
     return res.data;
@@ -40,3 +40,5 @@ export const fetchFullUserDetails = async (username) => {
     throw new Error('Failed to fetch full profile');
   }
 };
+
+export default {fetchUserData, fetchFullUserDetails};
