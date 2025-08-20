@@ -20,9 +20,10 @@ const fetchPosts = async () => {
     } = useQuery({
       queryKey: ["posts"],
       queryFn: fetchPosts,
-      staleTime: 5000, // cache stays fresh for 5s
-      refetchOnWindowFocus: false, // prevent auto refetch on tab switch
-      keepPreviousData: true, // keep old data while fetching new data
+      staleTime: 5000,       // data considered fresh for 5s
+      cacheTime: 1000 * 60,  // keep unused data in cache for 1 minute
+      refetchOnWindowFocus: false,
+      keepPreviousData: true,
     });
   
     if (isLoading) return <p>Loading...</p>;
@@ -44,4 +45,3 @@ const fetchPosts = async () => {
   }
   
   export default PostsComponent;
-  
