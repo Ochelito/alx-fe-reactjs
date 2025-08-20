@@ -1,4 +1,8 @@
 export default function ProfileSettings() {
-    return <p className="text-lg">This is the Profile Settings section.</p>;
-  }
-  
+  return (
+    <div>
+      <h2>Profile Settings</h2>
+      <p>This is where settings would be configured.</p>
+    </div>
+  );
+}

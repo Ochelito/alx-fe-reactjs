@@ -1,4 +1,8 @@
 export default function ProfileDetails() {
-    return <p className="text-lg">This is the Profile Details section.</p>;
-  }
-  
+  return (
+    <div>
+      <h2>Profile Details</h2>
+      <p>This is where user details would go.</p>
+    </div>
+  );
+}

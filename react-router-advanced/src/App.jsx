@@ -1,45 +1,44 @@
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Home from "./components/Home";
-import About from "./components/About";
 import Profile from "./components/Profile";
+import BlogPost from "./components/BlogPost";
 import ProtectedRoute from "./components/ProtectedRoute";
-import BlogPost from "./components/BlogPost"; // ✅ Import BlogPost
+import { useState } from "react";
 
-function App() {
-  const isAuthenticated = true; // Simulated authentication
+export default function App() {
+  // Simulated auth state
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   return (
     <Router>
-      <div>
-        {/* Navigation */}
-        <nav className="p-4 bg-gray-200 space-x-4">
-          <Link to="/" className="text-blue-500 hover:underline">Home</Link>
-          <Link to="/about" className="text-blue-500 hover:underline">About</Link>
-          <Link to="/profile" className="text-blue-500 hover:underline">Profile</Link>
-          <Link to="/blog/123" className="text-blue-500 hover:underline">Blog Example</Link>
-        </nav>
+      <nav style={{ marginBottom: "1rem" }}>
+        <Link to="/">Home</Link> |{" "}
+        <Link to="/profile">Profile</Link> |{" "}
+        <Link to="/blog/123">Blog Example</Link>
+        <button
+          onClick={() => setIsAuthenticated(!isAuthenticated)}
+          style={{ marginLeft: "1rem" }}
+        >
+          {isAuthenticated ? "Logout" : "Login"}
+        </button>
+      </nav>
 
-        {/* Routes */}
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
+      <Routes>
+        <Route path="/" element={<Home />} />
 
-          {/* ✅ Protected Route */}
-          <Route
-            path="/profile/*"
-            element={
-              <ProtectedRoute isAuthenticated={isAuthenticated}>
-                <Profile />
-              </ProtectedRoute>
-            }
-          />
+        {/* Protected Profile Route */}
+        <Route
+          path="/profile/*"
+          element={
+            <ProtectedRoute isAuthenticated={isAuthenticated}>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
 
-          {/* ✅ Dynamic Route */}
-          <Route path="/blog/:id" element={<BlogPost />} />
-        </Routes>
-      </div>
+        {/* Dynamic Blog Route */}
+        <Route path="/blog/:id" element={<BlogPost />} />
+      </Routes>
     </Router>
   );
 }
-
-export default App;
