@@ -1,12 +1,12 @@
 import { Navigate } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
 
-/**
- * ProtectedRoute ensures only authenticated users can access certain pages.
- * If not authenticated, it redirects to the Home page.
- */
-export default function ProtectedRoute({ children, isAuthenticated }) {
+export default function ProtectedRoute({ children }) {
+  const { isAuthenticated } = useAuth();
+
   if (!isAuthenticated) {
-    return <Navigate to="/" replace />; // redirect unauthenticated users
+    return <Navigate to="/" replace />;
   }
+
   return children;
 }
